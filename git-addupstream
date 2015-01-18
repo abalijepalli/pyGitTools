@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+"""
+	Add an upstream to a Git fork.
+
+	:Created:	1/18/2015
+ 	:Author: 	Arvind Balijepalli <arvind.balijepalli@nist.gov>
+	:License:	See LICENSE
+	:ChangeLog:
+	.. line-block::
+		1/18/15		AB	Initial version
+"""
+
+import argparse
+import os
+
+
+def parseCLArgs():
+	parser = argparse.ArgumentParser(description='Add a new upstream to a Git repository. By default upstream is set to: github:usnistgov/mosaic.git')
+	parser.add_argument('--upstream', help='specify upstream')
+	
+	return parser.parse_args()
+
+def main():
+	args=parseCLArgs()
+
+	if args.upstream==None:
+		os.system('git remote remove upstream')
+		os.system('git remote add upstream github:usnistgov/mosaic.git')
+	else:
+		os.system('git remote remove upstream')
+		os.system('git remote add upstream {upstream}'.format(upstream=args.upstream))
+
+	os.system('git remote -v')
+
+
+if __name__ == '__main__':
+	main()

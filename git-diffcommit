@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+"""
+	Diff a file to previous Git commit.
+
+	:Created:	1/18/2015
+ 	:Author: 	Arvind Balijepalli <arvind.balijepalli@nist.gov>
+	:License:	See LICENSE
+	:ChangeLog:
+	.. line-block::
+		1/18/15		AB	Initial version
+"""
+
+import argparse
+import os
+
+
+def parseCLArgs():
+	parser = argparse.ArgumentParser(description='Diff a file to a previous Git commit.')
+	parser.add_argument('filename', help='filename to diff')
+	parser.add_argument('--N', help='diff with Nth prior commit', type=int)
+	parser.add_argument('--commit_hash', help='diff with a specific commit', type=str)
+	
+	return parser.parse_args()
+
+def main():
+	args=parseCLArgs()
+
+	if args.N != None:
+		os.system('git difftool HEAD~{N} {filename}'.format(N=args.N, filename=args.filename))
+	elif args.commit_hash != None:
+		os.system('git difftool {commit} {filename}'.format(commit=args.commit_hash, filename=args.filename))
+	else:
+		print "Commit not specified. Diff to previous commit."
+		print args.filename
+		os.system('git difftool HEAD~1 {filename}'.format(filename=args.filename))
+
+
+if __name__ == '__main__':
+	main()

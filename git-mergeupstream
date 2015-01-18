@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+"""
+	Merge changes from an upstream Git repository.
+
+	:Created:	1/18/2015
+ 	:Author: 	Arvind Balijepalli <arvind.balijepalli@nist.gov>
+	:License:	See LICENSE
+	:ChangeLog:
+	.. line-block::
+		1/18/15		AB	Initial version
+"""
+
+import argparse
+import os
+
+
+def parseCLArgs():
+	parser = argparse.ArgumentParser(description='Merge changes from an upstream branch.')
+	parser.add_argument('branch', help='branch to merge')
+	
+	return parser.parse_args()
+
+def main():
+	args=parseCLArgs()
+
+	os.system('git fetch upstream')
+	os.system('git checkout {branch}'.format(branch=args.branch))
+	os.system('git merge upstream/{branch}'.format(branch=args.branch))
+
+if __name__ == '__main__':
+	main()
